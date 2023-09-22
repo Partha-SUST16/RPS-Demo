@@ -22,6 +22,12 @@ public class GameController : ControllerBase
         return await _gameService.GetAllGames();
     }
     
+    [HttpGet("stat")]
+    public async Task<ActionResult<GameStat>> GetGameStat()
+    {
+        return await _gameService.GetGameStat();
+    }
+    
     [HttpGet("{id}")]
     public async Task<ActionResult<Game>> GetGameById([FromRoute]Guid id)
     {

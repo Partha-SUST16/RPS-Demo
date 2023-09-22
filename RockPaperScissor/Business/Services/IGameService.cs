@@ -10,4 +10,5 @@ public interface IGameService
     Task<Game> CreateGame();
     Task<Game> FinishGame(Guid id);
     Task<Game> PlayGame(Guid id, Move playerMove);
+    Task<GameStat> GetGameStat();
 }

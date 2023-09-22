@@ -22,6 +22,20 @@ public class GameService : IGameService
         return await _gameDbContext.Games.ToListAsync();
     }
 
+    public async Task<GameStat> GetGameStat()
+    {
+        var gameState = await _gameDbContext.GameStat.FirstOrDefaultAsync();
+        
+        if (gameState is not null) 
+            return gameState;
+        
+        gameState = new GameStat();
+        _gameDbContext.GameStat.Add(gameState);
+        await _gameDbContext.SaveChangesAsync();
+
+        return gameState;
+    }
+
     public async Task<Game> GetGameById(Guid id)
     {
         Game? game = await _gameDbContext.Games.FirstOrDefaultAsync(g => g.Id == id);
@@ -53,10 +67,11 @@ public class GameService : IGameService
     public async Task<Game> PlayGame(Guid id, Move playerMove)
     {
         var game = await GetGameById(id);
+        var gameStat = await GetGameStat();
         if (!game.IsActive)
             throw new Exception("Game is finished");
-        
-        game = _gameLogicService.CalculateComputerMove(playerMove, game);
+        game.PlayerMove = playerMove;
+        game = _gameLogicService.CalculateComputerMove(playerMove, game, gameStat);
         await _gameDbContext.SaveChangesAsync();
         return game;
     }

@@ -8,6 +8,7 @@ public class GameDbContext : Microsoft.EntityFrameworkCore.DbContext
     protected readonly IConfiguration Configuration;
     
     public DbSet<Game> Games { get; set; }
+    public DbSet<GameStat> GameStat { get; set; }
 
     public GameDbContext(IConfiguration configuration)
     {

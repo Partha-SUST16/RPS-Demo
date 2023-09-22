@@ -5,5 +5,5 @@ namespace RockPaperScissor.Business.Services;
 
 public interface IGameLogicService
 {
-    Game CalculateComputerMove(Move playerMove, Game game);
+    Game CalculateComputerMove(Move playerMove, Game game, GameStat gameStat);
 }

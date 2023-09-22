@@ -12,38 +12,39 @@ public class GameLogicService : IGameLogicService
         { Move.Scissor, Move.Rock },
     };
 
-    public Game CalculateComputerMove(Move playerMove, Game game)
+    public Game CalculateComputerMove(Move playerMove, Game game, GameStat gameStat)
     {
-        Move computerMove = GenerateComputerMove(game);
+        Move computerMove = GenerateComputerMove(gameStat);
         if (playerMove == computerMove)
         {
-            game.DrawMatchCount++;
+            gameStat.DrawMatchCount++;
             game.GameResult = "Tie";
         }
         else if (WinningMoves[computerMove] == playerMove)
         {
-            game.PlayerScore++;
+            gameStat.PlayerScore++;
             game.GameResult = "Player wins";
         }
         else
         {
-            game.ComputerScore++;
+            gameStat.ComputerScore++;
             game.GameResult = "Computer wins";
         }
 
         return game;
     }
 
-    private Move GenerateComputerMove(Game game)
+    private Move GenerateComputerMove(GameStat gameStat)
     {
         Dictionary<Move, int> moveCounts = new Dictionary<Move, int>
         {
-            { Move.Rock, game.RockCount },
-            { Move.Paper, game.PaperCount },
-            { Move.Scissor, game.ScissorCount }
+            { Move.Rock, gameStat.RockCount },
+            { Move.Paper, gameStat.PaperCount },
+            { Move.Scissor, gameStat.ScissorCount }
         };
 
         Move mostUsed = moveCounts.MaxBy(kv => kv.Value).Key;
         return WinningMoves[mostUsed];
     }
+    
 }
